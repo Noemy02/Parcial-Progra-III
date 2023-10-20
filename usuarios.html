@@ -1,0 +1,92 @@
+<form method="post" id="frmUsuarios" data-iddocente="-1" data-accion="nuevo">
+    <div class="card text-bg-dark mb-3" style="width: 600px;">
+        <div class="card-header border-success">
+            <div data-bs-theme="dark" class="d-flex">
+                <div>Registro de Usuarios</div>
+                <div class="ms-auto">
+                    <button type="button" class="btn-close close" data-form="usuarios"></button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row p-1">
+                <div class="col-3">USUARIO:</div>
+                <div class="col-6">
+                    <input required type="text" name="txtUsuarioUsuarios" id="txtUsuarioUsuarios" class="form-control">
+                </div>
+            </div>
+            <div class="row p-1">
+                <div class="col-3">CLAVE:</div>
+                <div class="col-3">
+                    <input required type="text" name="txtClaveUsuarios" id="txtClaveUsuarios"" class="form-control">
+                </div>
+            </div>
+            <div class="row p-1">
+                <div class="col-3">NOMBRE:</div>
+                <div class="col-6">
+                    <input required type="text" name="txtNombreUsuarios" id="txtNombreUsuarios" class="form-control">
+                </div>
+            </div>
+            <div class="row p-1">
+                <div class="col-3">DIRECCION:</div>
+                <div class="col-9">
+                    <input required type="text" name="txtDireccionUsuarios" id="txtDireccionUsuarios" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">TELEFONO:</div>
+                <div class="col-3">
+                    <input required type="text" name="txtTelefonoUsuarios" id="txtTelefonoUsuarios" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-transparent border-success">
+            <div class="row">
+                <div class="col text-center">
+                    <input type="reset" value="Nuevo" class="btn btn-danger">
+                    <input type="submit" value="Guardar" class="btn btn-success">
+                    <button id="btnBuscarDocente" class="btn btn-primary">Buscar Usuario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    btnBuscarUsuario.addEventListener('click', event=>{
+        event.preventDefault();
+        abrirVentana('busqueda_usuarios');
+        $element.show();
+    });
+    frmUusuarios.addEventListener("submit",event=>{
+        event.preventDefault();
+        let datos = {
+            accion : frmUsuarios.dataset.accion,
+            idAlumno: frmUsuarios.dataset.idusuario,
+            usuario: txtUsuarioUsuarios.value,
+            clave: txtClaveUsuarios.value,
+            nombre: txtNombreUsuarios.value,
+            direccion: txtDireccionUsuarios.value,
+            telefono: txtTelefonoUsuarios.value,
+        };
+        fetch("/usuarios", {
+            method: "POST",
+            body: JSON.stringify(datos)
+        }).then(resp=>resp.json())
+        .then(respuesta=>{
+            if( respuesta.msg=="ok" ){
+                limpiarDatosUsuarios();
+                mostrarDatosUusarios();
+            }
+        });
+    });
+    
+    function limpiarDatosUsuarios(){
+        frmUsuarios.dataset.accion = "nuevo";
+        frmUsuarios.dataset.idusuario = "-1";
+        txtUsuarioUsuarios.value = "";
+        txtClaveUsuarios.value = "";
+        txtNombreUsuarios.value = "";
+        txtDireccionUsuarios.value = "";
+        txtTelefonoUsuarios.value = "";
+    }
+</script>
