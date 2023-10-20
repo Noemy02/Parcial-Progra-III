@@ -1,0 +1,88 @@
+<div class="card text-bg-dark mb-3" style="width: 750px;">
+    <div class="card-header border-success">
+        <div data-bs-theme="dark" class="d-flex">
+            <div>Consulta de Docentes</div>
+            <div class="ms-auto">
+                <button type="button" class="btn-close close" data-form="busqueda_docentes"></button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row p-1">
+            <div class="col">
+                <table class="table table-sm table-hover table-dark" id="tblConsultaDocentes">
+                    <thead>
+                        <tr>
+                            <th>Buscar:</th>
+                            <th colspan="4">
+                                <input type="text" name="txtBuscarDocentes" id="txtBuscarDocentes" 
+                                    class="form-control" onkeyup="buscarDocentes(this.value)">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>CODIGO</th>
+                            <th>NOMBRE</th>
+                            <th>DIRECCION</th>
+                            <th>TEL</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody> </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+</div>
+<script>
+    mostrarDatosDocentes();
+
+    function buscarDocentes(val){
+        mostrarDatosDocentes(val);
+    }
+    
+     function mostrarDatosDocentes(valor){
+        valor = valor || '';
+        fetch(`/buscar_docentes`,{
+            method: 'POST',
+            body:j=JSON.stringify({buscar: valor})
+        }).then(resp=>resp.json())
+        .then(resp=>{
+            let $tblDocentes = document.querySelector("#tblConsultaDocentes > tbody"),
+                $filas = '';
+            resp.forEach(docente => {
+                $filas += `
+                    <tr onClick='modificarDocente(${ JSON.stringify(docente) })'>
+                        <td>${docente.codigo}</td>
+                        <td>${docente.nombre}</td>
+                        <td>${docente.direccion}</td>
+                        <td>${docente.telefono}</td>
+                        <td><button onClick='eliminarDocente(${ JSON.stringify(docente) })' class="btn btn-danger">Eliminar</button></td>
+                    </tr>
+                `;
+            });
+            $tblDocentes.innerHTML = $filas;
+        });
+    }
+    function modificarDocente(docente){
+        frmDocentes.dataset.accion = "modificar";
+        frmDocentes.dataset.iddocente= docente.idDocente;
+        txtCodigoDocentes.value = docente.codigo;
+        txtNombreDocentes.value = docente.nombre;
+        txtDireccionDocentes.value = docente.direccion;
+        txtTelefonoDocentes.value = docente.telefono;
+    }
+    function eliminarDocente(docente){
+        if( confirm(`Esta seguro de eliminar a: ${docente.nombre}`) ){
+            fetch("/docentes", {
+                method: "POST",
+                body: JSON.stringify({accion: "eliminar", idDocente: docente.idDocente})
+            }).then(resp=>resp.json())
+            .then(respuesta=>{
+                if( respuesta.msg=="ok" ){
+                    limpiarDatosDocentes();
+                    mostrarDatosDocentes();
+                }
+            });
+        }
+    }
+</script>
