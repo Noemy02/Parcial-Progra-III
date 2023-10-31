@@ -3,7 +3,7 @@ db = crud_academica.crud()
 
 class crud_usuarios:
     def consultar_usuarios(self, buscar):
-        return db.consultar("select * from usuarios where clave like'%"+ buscar["buscar"] 
+        return db.consultar("select * from usuarios where usuario like'%"+ buscar["buscar"] 
             +"%' or nombre like'%"+ buscar["buscar"] +"%'")
     
     def administrar(self, usuarios):

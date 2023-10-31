@@ -1,4 +1,4 @@
-<form method="post" id="frmUsuarios" data-iddocente="-1" data-accion="nuevo">
+<form method="post" id="frmUsuarios" data-idusuario="-1" data-accion="nuevo">
     <div class="card text-bg-dark mb-3" style="width: 600px;">
         <div class="card-header border-success">
             <div data-bs-theme="dark" class="d-flex">
@@ -45,7 +45,7 @@
                 <div class="col text-center">
                     <input type="reset" value="Nuevo" class="btn btn-danger">
                     <input type="submit" value="Guardar" class="btn btn-success">
-                    <button id="btnBuscarDocente" class="btn btn-primary">Buscar Usuario</button>
+                    <button id="btnBuscarUsuario" class="btn btn-primary">Buscar Usuario</button>
                 </div>
             </div>
         </div>
@@ -57,7 +57,7 @@
         abrirVentana('busqueda_usuarios');
         $element.show();
     });
-    frmUusuarios.addEventListener("submit",event=>{
+    frmUsuarios.addEventListener("submit",event=>{
         event.preventDefault();
         let datos = {
             accion : frmUsuarios.dataset.accion,
